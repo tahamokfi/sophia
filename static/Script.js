@@ -110,22 +110,40 @@ uploadBtn.addEventListener('click', async () => {
     }
 });
 
-// Chatbot functionality
+// AI Assistant functionality
 const sendBtn = document.getElementById('sendBtn');
 const userInput = document.getElementById('userInput');
 const messages = document.getElementById('messages');
 
+// Function to add a message to the chat
+function addMessage(content, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+    messageDiv.textContent = content;
+    messages.appendChild(messageDiv);
+    messages.scrollTop = messages.scrollHeight;
+}
+
 // Function to handle sending messages
 sendBtn.addEventListener('click', () => {
-    const question = userInput.value;
+    const question = userInput.value.trim();
     if (question) {
-        // Display user question
-        messages.innerHTML += `<div>User: ${question}</div>`;
+        addMessage(question, true);
         userInput.value = '';
 
         // Simulate a response (replace this with actual RAG logic)
-        const response = getResponse(question);
-        messages.innerHTML += `<div>Bot: ${response}</div>`;
+        setTimeout(() => {
+            const response = getResponse(question);
+            addMessage(response);
+        }, 1000);
+    }
+});
+
+// Allow sending messages with Enter key
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendBtn.click();
     }
 });
 
@@ -134,3 +152,11 @@ function getResponse(question) {
     // Here you would implement your RAG logic to generate a response based on the transcript
     return "This is a simulated response based on your question: " + question;
 }
+
+// Add an initial bot message
+addMessage("Hello! How can I assist you today?");
+
+// Remove the following lines as they are no longer needed:
+// - minimizeBtn event listener
+// - window resize event listener
+// - Initial body padding adjustment
