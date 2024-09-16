@@ -109,3 +109,28 @@ uploadBtn.addEventListener('click', async () => {
         transcript.textContent = "Error: Failed to send audio to server";
     }
 });
+
+// Chatbot functionality
+const sendBtn = document.getElementById('sendBtn');
+const userInput = document.getElementById('userInput');
+const messages = document.getElementById('messages');
+
+// Function to handle sending messages
+sendBtn.addEventListener('click', () => {
+    const question = userInput.value;
+    if (question) {
+        // Display user question
+        messages.innerHTML += `<div>User: ${question}</div>`;
+        userInput.value = '';
+
+        // Simulate a response (replace this with actual RAG logic)
+        const response = getResponse(question);
+        messages.innerHTML += `<div>Bot: ${response}</div>`;
+    }
+});
+
+// Simulated response function (replace with actual RAG implementation)
+function getResponse(question) {
+    // Here you would implement your RAG logic to generate a response based on the transcript
+    return "This is a simulated response based on your question: " + question;
+}
