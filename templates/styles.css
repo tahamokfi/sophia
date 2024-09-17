@@ -3,7 +3,7 @@
 .chatbot-container {
     background-color: #f8f9fa;
     border: 1px solid #ced4da;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 20px;
     max-width: 400px;
     margin: 20px auto;
@@ -14,6 +14,7 @@
     text-align: center;
     color: #343a40;
     margin-bottom: 15px;
+    font-size: 20px;
 }
 
 .chatbox {
@@ -51,9 +52,10 @@
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .send-btn:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
