@@ -1,9 +1,5 @@
-Flask==2.3.2
-transformers==4.44.2
-torch==2.0.1
-pydub==0.25.1
-google-cloud-storage==2.9.0
-pydub
-wave
+Flask
+transformers
+google-cloud-storage
 librosa
 ffmpeg-python
