@@ -3,3 +3,7 @@ transformers
 google-cloud-storage
 librosa
 ffmpeg-python
+llama-index-core
+llama-index-llms-openai
+llama-index
+torch

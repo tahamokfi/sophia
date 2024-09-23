@@ -126,17 +126,35 @@ function addMessage(content, isUser = false) {
 }
 
 // Function to handle sending messages
-sendBtn.addEventListener('click', () => {
+sendBtn.addEventListener('click', async () => {
     const question = userInput.value.trim();
     if (question) {
         addMessage(question, true);
         userInput.value = '';
 
-        // Simulate a response (replace this with actual RAG logic)
-        setTimeout(() => {
-            const response = getResponse(question);
-            addMessage(response);
-        }, 1000);
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    question: question,
+                    transcript: transcript.textContent
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                addMessage(result.response);
+            } else {
+                console.error("Failed to get response:", response.statusText);
+                addMessage("Error: Failed to get response from server");
+            }
+        } catch (error) {
+            console.error("Error during fetch:", error);
+            addMessage("Error: Failed to send message to server");
+        }
     }
 });
 
@@ -147,11 +165,7 @@ userInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Simulated response function (replace with actual RAG implementation)
-function getResponse(question) {
-    // Here you would implement your RAG logic to generate a response based on the transcript
-    return "This is a simulated response based on your question: " + question;
-}
+// Remove the simulated getResponse function as it's no longer needed
 
 // Add an initial bot message
 addMessage("Hello! How can I assist you today?");

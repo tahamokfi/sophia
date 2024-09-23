@@ -9,6 +9,7 @@ import traceback
 import numpy as np
 import ffmpeg
 import math
+from components.summarization import rag_query_engine
 
 app = Flask(__name__)
 
@@ -36,6 +37,23 @@ def upload_audio():
         return jsonify({"transcript": transcript})
     except Exception as e:
         error_message = f"Error in upload_audio: {str(e)}\n{traceback.format_exc()}"
+        print(error_message)
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        data = request.json
+        question = data.get('question')
+        transcript = data.get('transcript')
+        
+        if not question or not transcript:
+            return jsonify({"error": "Missing question or transcript"}), 400
+        
+        response = rag_query_engine(transcript).query(question).response
+        return jsonify({"response": response})
+    except Exception as e:
+        error_message = f"Error in chat: {str(e)}\n{traceback.format_exc()}"
         print(error_message)
         return jsonify({"error": str(e)}), 500
 
@@ -92,6 +110,7 @@ def transcribe_in_batches(wav_data, chunk_duration=30):
         error_message = f"Error in transcribe_in_batches: {str(e)}\n{traceback.format_exc()}"
         print(error_message)
         raise
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5004)
